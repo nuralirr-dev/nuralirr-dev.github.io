@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Universal Excel POI - README</title>
+  <style>
+    :root { color-scheme: light; --bg:#f6f8fb; --paper:#ffffff; --text:#1f2937; --muted:#64748b; --line:#d8e0ea; --brand:#167a5b; --brand-dark:#0f5f49; --code:#0f172a; --soft:#eef7f3; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    .layout { display:grid; grid-template-columns: 280px minmax(0, 1fr); gap:28px; max-width:1280px; margin:0 auto; padding:28px; }
+    aside { position:sticky; top:24px; align-self:start; max-height:calc(100vh - 48px); overflow:auto; background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:18px; }
+    aside h2 { margin:0 0 12px; font-size:16px; }
+    aside a { display:block; color:var(--muted); text-decoration:none; font-size:14px; padding:5px 0; }
+    aside a:hover { color:var(--brand-dark); }
+    .toc-level-3 { padding-left:14px; }
+    main { min-width:0; background:var(--paper); border:1px solid var(--line); border-radius:8px; padding:34px; box-shadow:0 14px 35px rgba(31,41,55,.06); }
+    h1 { margin-top:0; font-size:34px; line-height:1.15; color:#0f172a; }
+    h2 { margin-top:36px; padding-top:12px; border-top:1px solid var(--line); color:#102033; }
+    h3 { margin-top:28px; color:#233044; }
+    a { color:var(--brand-dark); }
+    code { font-family: Consolas, 'Courier New', monospace; background:var(--soft); color:#0f513f; border-radius:4px; padding:2px 5px; font-size:.94em; }
+    pre { overflow:auto; background:var(--code); color:#e5eef8; border-radius:8px; padding:16px; border:1px solid #172033; }
+    pre code { background:transparent; color:inherit; padding:0; }
+    .table-wrap { overflow:auto; margin:18px 0; border:1px solid var(--line); border-radius:8px; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; text-align:left; }
+    th { background:#f1f5f9; color:#263344; font-weight:700; }
+    tr:last-child td { border-bottom:0; }
+    @media (max-width: 900px) { .layout { grid-template-columns:1fr; padding:16px; } aside { position:static; max-height:none; } main { padding:22px; } h1 { font-size:28px; } }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <h2>Mundarija</h2>
+      <a class="toc-level-1" href="#universal-excel-poi">Universal Excel POI</a>
+<a class="toc-level-2" href="#talablar">Talablar</a>
+<a class="toc-level-2" href="#maven">Maven</a>
+<a class="toc-level-3" href="#boshqa-projectlarda-dependency-sifatida-ishlatish">Boshqa projectlarda dependency sifatida ishlatish</a>
+<a class="toc-level-2" href="#asosiy-importlar">Asosiy importlar</a>
+<a class="toc-level-2" href="#tezkor-boshlash">Tezkor boshlash</a>
+<a class="toc-level-3" href="#xssf-rejimida-o-qish-va-yozish">XSSF rejimida o'qish va yozish</a>
+<a class="toc-level-3" href="#sxssf-sax-rejimida-o-qish">SXSSF/SAX rejimida o'qish</a>
+<a class="toc-level-3" href="#sxssf-rejimida-yozish">SXSSF rejimida yozish</a>
+<a class="toc-level-2" href="#xssf-va-sxssf-o-rtasida-konvertatsiya">XSSF va SXSSF o'rtasida konvertatsiya</a>
+<a class="toc-level-3" href="#xssf-workbook-dan-sxssf-workbook-ga-o-tish">XSSF workbook'dan SXSSF workbook'ga o'tish</a>
+<a class="toc-level-3" href="#sxssf-workbook-dan-xssf-workbook-ga-o-tish">SXSSF workbook'dan XSSF workbook'ga o'tish</a>
+<a class="toc-level-2" href="#indekslash">Indekslash</a>
+<a class="toc-level-2" href="#excel-api">Excel API</a>
+<a class="toc-level-2" href="#xssfapi">XssfApi</a>
+<a class="toc-level-2" href="#xssfworkbook">XssfWorkbook</a>
+<a class="toc-level-2" href="#xssfsheet">XssfSheet</a>
+<a class="toc-level-2" href="#poi-row-va-cell-bilan-missing-policy-orqali-ishlash">POI Row va Cell bilan missing policy orqali ishlash</a>
+<a class="toc-level-3" href="#row-mavjud-bo-lmasa-xato-tashlash">Row mavjud bo'lmasa xato tashlash</a>
+<a class="toc-level-3" href="#row-mavjud-bo-lmasa-default-parametrlar-bilan-yaratish">Row mavjud bo'lmasa default parametrlar bilan yaratish</a>
+<a class="toc-level-3" href="#row-mavjud-bo-lmasa-parametrlar-bilan-yaratish">Row mavjud bo'lmasa parametrlar bilan yaratish</a>
+<a class="toc-level-3" href="#cell-mavjud-bo-lmasa-xato-tashlash">Cell mavjud bo'lmasa xato tashlash</a>
+<a class="toc-level-3" href="#row-va-cell-mavjud-bo-lmasa-default-parametrlar-bilan-yaratish">Row va cell mavjud bo'lmasa default parametrlar bilan yaratish</a>
+<a class="toc-level-3" href="#cell-mavjud-bo-lmasa-blank-cell-yaratish">Cell mavjud bo'lmasa blank cell yaratish</a>
+<a class="toc-level-3" href="#row-va-cell-mavjud-bo-lmasa-parametrlar-bilan-yaratish">Row va cell mavjud bo'lmasa parametrlar bilan yaratish</a>
+<a class="toc-level-2" href="#with-lambda-metodlari">with... lambda metodlari</a>
+<a class="toc-level-3" href="#joriy-xssf-workbook-bilan-ishlash">Joriy XSSF workbook bilan ishlash</a>
+<a class="toc-level-3" href="#xssf-sheet-row-va-cell-bilan-ishlash">XSSF sheet, row va cell bilan ishlash</a>
+<a class="toc-level-3" href="#joriy-sxssf-workbook-va-sheet-bilan-ishlash">Joriy SXSSF workbook va sheet bilan ishlash</a>
+<a class="toc-level-2" href="#sxssfapi">SxssfApi</a>
+<a class="toc-level-2" href="#sxssfread">SxssfRead</a>
+<a class="toc-level-2" href="#sxssfwritebuilder">SxssfWriteBuilder</a>
+<a class="toc-level-2" href="#sxssfworkbook">SxssfWorkbook</a>
+<a class="toc-level-3" href="#sxssf-row-limit-va-avtomatik-yangi-sheet">SXSSF row limit va avtomatik yangi sheet</a>
+<a class="toc-level-2" href="#templatewritebuilder">TemplateWriteBuilder</a>
+<a class="toc-level-2" href="#excelstyle-va-excelstyles">ExcelStyle va ExcelStyles</a>
+<a class="toc-level-2" href="#textrow-cellrow-excelcell">TextRow, CellRow, ExcelCell</a>
+<a class="toc-level-2" href="#callback-turlari">Callback turlari</a>
+<a class="toc-level-2" href="#formula">Formula</a>
+<a class="toc-level-2" href="#excelutils">ExcelUtils</a>
+<a class="toc-level-2" href="#xatolar">Xatolar</a>
+<a class="toc-level-2" href="#amaliy-tavsiyalar">Amaliy tavsiyalar</a>
+    </aside>
+    <main>
+<h1 id="universal-excel-poi">Universal Excel POI</h1>
+<p>Apache POI ustida qurilgan fluent Java kutubxonasi. <code>.xlsx</code> fayllarni o'qish, yozish, uslublash, shablondan to'ldirish va katta fayllar bilan ishlash uchun mo'ljallangan.</p>
+<p>API ataylab POI nomlariga yaqin qilingan:</p>
+<ul>
+<li><strong>XSSF</strong>: <code>Excel.xssf()</code> - <code>XSSFWorkbook</code> asosidagi xotirada ishlaydigan rejim. Workbook to'liq xotirada bo'ladi.</li>
+<li><strong>SXSSF/SAX</strong>: <code>Excel.sxssf()</code> - katta fayllarni yozish uchun <code>SXSSFWorkbook</code>, katta fayllarni o'qish uchun SAX parser ishlatadi.</li>
+</ul>
+<p>Bu nomlar Java <code>Stream</code> API bilan adashmaslik uchun tanlangan.</p>
+<h2 id="talablar">Talablar</h2>
+<ul>
+<li>Java 25</li>
+<li>Maven</li>
+<li>Apache POI <code>poi-ooxml</code></li>
+</ul>
+<h2 id="maven">Maven</h2>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;uz.rnr&lt;/groupId&gt;
+  &lt;artifactId&gt;excel-rnr&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<h3 id="boshqa-projectlarda-dependency-sifatida-ishlatish">Boshqa projectlarda dependency sifatida ishlatish</h3>
+<p>Avval kutubxonani local Maven repository'ga install qiling:</p>
+<pre><code class="language-powershell">mvn -s maven-settings.xml &quot;-Dmaven.repo.local=.m2\repository&quot; clean install</code></pre>
+<p>Agar oddiy Maven local repository ishlatilsa:</p>
+<pre><code class="language-powershell">mvn clean install</code></pre>
+<p>Keyin boshqa project <code>pom.xml</code> fayliga dependency qo'shing:</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;uz.rnr&lt;/groupId&gt;
+  &lt;artifactId&gt;excel-rnr&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+<p>Agar install paytida <code>-Dmaven.repo.local=.m2\repository</code> ishlatilgan bo'lsa, boshqa project build'ida ham shu local repository path berilishi kerak yoki artifact standart <code>~/.m2/repository</code>ga install qilinishi kerak.</p>
+<h2 id="asosiy-importlar">Asosiy importlar</h2>
+<pre><code class="language-java">import uz.rnr.excel.CellRow;
+import uz.rnr.excel.Excel;
+import uz.rnr.excel.ExcelCell;
+import uz.rnr.excel.ExcelException;
+import uz.rnr.excel.ExcelStyles;
+import uz.rnr.excel.ExcelUtils;
+import uz.rnr.excel.Formula;
+import uz.rnr.excel.CellCreateOptions;
+import uz.rnr.excel.MissingCellPolicy;
+import uz.rnr.excel.MissingRowPolicy;
+import uz.rnr.excel.RowCreateOptions;
+import uz.rnr.excel.TextRow;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.streaming.SXSSFRow;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.math.BigDecimal;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;</code></pre>
+<h2 id="tezkor-boshlash">Tezkor boshlash</h2>
+<h3 id="xssf-rejimida-o-qish-va-yozish">XSSF rejimida o'qish va yozish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().open(Path.of(&quot;input.xlsx&quot;))) {
+    List&lt;Map&lt;String, String&gt;&gt; rows = book.sheet(0)
+            .includeEmptyRows(false)
+            .rowsAsMaps(0);
+
+    book.customProp(&quot;templateId&quot;, &quot;REPORT&quot;)
+            .customProp(&quot;version&quot;, &quot;1&quot;);
+
+    book.sheet(&quot;Report&quot;)
+            .cell(0, 0, &quot;Updated&quot;)
+            .style(0, 0, ExcelStyles.header())
+            .autoSizeColumns(0, 5);
+
+    book.save(Path.of(&quot;output.xlsx&quot;));
+}</code></pre>
+<h3 id="sxssf-sax-rejimida-o-qish">SXSSF/SAX rejimida o'qish</h3>
+<pre><code class="language-java">Excel.sxssf()
+        .read(Path.of(&quot;big.xlsx&quot;))
+        .onlySheet(&quot;Data&quot;)
+        .fromRow(1)
+        .expectedColumns(8)
+        .forEachCells(row -&gt; {
+            Long id = row.cell(0).asLong();
+            BigDecimal amount = row.cell(3).asBigDecimal();
+        });</code></pre>
+<h3 id="sxssf-rejimida-yozish">SXSSF rejimida yozish</h3>
+<pre><code class="language-java">try (var out = Excel.sxssf()
+        .write()
+        .windowSize(500)
+        .to(Path.of(&quot;large.xlsx&quot;))) {
+
+    out.sheet(&quot;Data&quot;)
+            .style(&quot;bordered&quot;, ExcelStyles.thinBorders())
+            .header(&quot;ID&quot;, &quot;Name&quot;, &quot;Amount&quot;, &quot;Date&quot;)
+            .row(1, &quot;A&quot;, BigDecimal.TEN, LocalDate.now())
+            .row(List.of(2, &quot;B&quot;, BigDecimal.ONE, LocalDate.now()), &quot;bordered&quot;)
+            .save();
+}</code></pre>
+<h2 id="xssf-va-sxssf-o-rtasida-konvertatsiya">XSSF va SXSSF o'rtasida konvertatsiya</h2>
+<p>Workbook'ni ikki tomonga ham o'tkazish mumkin:</p>
+<ul>
+<li>XSSF -&gt; SXSSF</li>
+<li>SXSSF -&gt; XSSF</li>
+</ul>
+<h3 id="xssf-workbook-dan-sxssf-workbook-ga-o-tish">XSSF workbook'dan SXSSF workbook'ga o'tish</h3>
+<p>1-usul: <code>XssfWorkbook.toSxssf(Path)</code>.</p>
+<pre><code class="language-java">try (var xssf = Excel.xssf().open(Path.of(&quot;input.xlsx&quot;));
+     var sxssf = xssf.toSxssf(Path.of(&quot;streamed.xlsx&quot;))) {
+
+    sxssf.sheet(&quot;Extra&quot;)
+            .row(&quot;created in SXSSF mode&quot;)
+            .save();
+}</code></pre>
+<p>2-usul: <code>Excel.sxssf().from(XSSFWorkbook)</code>.</p>
+<pre><code class="language-java">try (var xssf = Excel.xssf().open(Path.of(&quot;input.xlsx&quot;));
+     var sxssf = Excel.sxssf().from(xssf.workbook()).to(Path.of(&quot;streamed.xlsx&quot;))) {
+
+    sxssf.sheet(&quot;Data&quot;)
+            .row(&quot;new row&quot;)
+            .save();
+}</code></pre>
+<h3 id="sxssf-workbook-dan-xssf-workbook-ga-o-tish">SXSSF workbook'dan XSSF workbook'ga o'tish</h3>
+<p><code>SxssfWorkbook.toXssf()</code> joriy <code>SXSSFWorkbook</code> holatini ichki buffer'ga yozadi va uni <code>XSSFWorkbook</code> sifatida qayta ochadi.</p>
+<pre><code class="language-java">try (var sxssf = Excel.sxssf().write().to(Path.of(&quot;tmp.xlsx&quot;))) {
+    sxssf.sheet(&quot;A&quot;).row(&quot;value&quot;);
+
+    try (var xssf = sxssf.toXssf()) {
+        xssf.sheet(&quot;A&quot;)
+                .cell(1, 0, &quot;edited in XSSF&quot;)
+                .save(Path.of(&quot;xssf.xlsx&quot;));
+    }
+}</code></pre>
+<p>Muhim: <code>toXssf()</code> katta SXSSF workbook'ni to'liq XSSF workbook'ga aylantiradi. Juda katta fayllarda bu ko'p xotira talab qiladi.</p>
+<h2 id="indekslash">Indekslash</h2>
+<p>Barcha row va column indekslari <code>0-based</code>.</p>
+<ul>
+<li>Excel <code>A1</code> -&gt; <code>rowIndex = 0</code>, <code>columnIndex = 0</code></li>
+<li>Excel <code>B2</code> -&gt; <code>rowIndex = 1</code>, <code>columnIndex = 1</code></li>
+</ul>
+<h2 id="excel-api"><code>Excel</code> API</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod yoki konstanta</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>Excel.xssf()</code></td><td>XSSF API qaytaradi.</td></tr>
+<tr><td><code>Excel.sxssf()</code></td><td>SXSSF/SAX API qaytaradi.</td></tr>
+<tr><td><code>Excel.formula(String expression)</code></td><td>Cell'ga yozish uchun <code>Formula</code> yaratadi.</td></tr>
+<tr><td><code>Excel.MAX_ROWS</code></td><td>Excel 2007+ maksimal row soni.</td></tr>
+<tr><td><code>Excel.MAX_COLUMNS</code></td><td>Excel 2007+ maksimal column soni.</td></tr>
+<tr><td><code>Excel.DEFAULT_WINDOW_SIZE</code></td><td>SXSSF window size default qiymati: <code>200</code>.</td></tr>
+</tbody></table></div>
+<h2 id="xssfapi"><code>XssfApi</code></h2>
+<p><code>Excel.xssf()</code> orqali olinadi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>create()</code></td><td>Yangi bo'sh <code>XSSFWorkbook</code> yaratadi.</td></tr>
+<tr><td><code>open(Path path)</code></td><td><code>.xlsx</code> faylni XSSF rejimida ochadi.</td></tr>
+<tr><td><code>open(InputStream input)</code></td><td><code>.xlsx</code> input stream'ni XSSF rejimida ochadi.</td></tr>
+<tr><td><code>from(Workbook workbook)</code></td><td>Istalgan POI <code>Workbook</code> obyektini <code>XssfWorkbook</code>ga ko'chiradi.</td></tr>
+</tbody></table></div>
+<h2 id="xssfworkbook"><code>XssfWorkbook</code></h2>
+<p><code>XssfWorkbook</code> <code>AutoCloseable</code>; <code>try-with-resources</code> bilan ishlating.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>workbook()</code></td><td>Ichki <code>XSSFWorkbook</code> obyektini qaytaradi.</td></tr>
+<tr><td><code>withWorkbook(Consumer&lt;? super XSSFWorkbook&gt; consumer)</code></td><td>Joriy <code>XSSFWorkbook</code> ustida lambda bajaradi va <code>XssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>sheetNames()</code></td><td>Barcha sheet nomlarini qaytaradi.</td></tr>
+<tr><td><code>sheet(int index)</code></td><td>Sheet'ni indeks bo'yicha qaytaradi.</td></tr>
+<tr><td><code>withSheet(int index, Consumer&lt;? super Sheet&gt; consumer)</code></td><td>Indeks bo'yicha sheet ustida lambda bajaradi va <code>XssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>sheet(String name)</code></td><td>Sheet'ni nomi bo'yicha qaytaradi yoki mavjud bo'lmasa yaratadi.</td></tr>
+<tr><td><code>withSheet(String name, Consumer&lt;? super Sheet&gt; consumer)</code></td><td>Nom bo'yicha sheet ustida lambda bajaradi va <code>XssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>customProp(String key, String value)</code></td><td>Workbook custom property yozadi.</td></tr>
+<tr><td><code>customProps(Map&lt;String, String&gt; values)</code></td><td>Bir nechta custom property yozadi.</td></tr>
+<tr><td><code>customProp(String key)</code></td><td>Custom property qiymatini o'qiydi.</td></tr>
+<tr><td><code>customProps()</code></td><td>Barcha string custom property'larni qaytaradi.</td></tr>
+<tr><td><code>requireCustomProp(String key, String expectedValue)</code></td><td>Custom property kutilgan qiymatga tengligini tekshiradi.</td></tr>
+<tr><td><code>recalculateFormulas()</code></td><td>Formulalarni hisoblaydi va force recalculation yoqadi.</td></tr>
+<tr><td><code>save(Path path)</code></td><td>Workbook'ni faylga saqlaydi.</td></tr>
+<tr><td><code>save(OutputStream output)</code></td><td>Workbook'ni output stream'ga saqlaydi.</td></tr>
+<tr><td><code>toSxssf(Path outputPath)</code></td><td>XSSF workbook'ni <code>SxssfWorkbook</code>ga o'tkazadi.</td></tr>
+<tr><td><code>close()</code></td><td>Ichki workbook'ni yopadi.</td></tr>
+</tbody></table></div>
+<h2 id="xssfsheet"><code>XssfSheet</code></h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>poiSheet()</code></td><td>Ichki POI <code>Sheet</code> obyektini qaytaradi.</td></tr>
+<tr><td><code>withSheet(Consumer&lt;? super Sheet&gt; consumer)</code></td><td>Joriy sheet ustida lambda bajaradi va <code>XssfSheet</code>ni qaytaradi.</td></tr>
+<tr><td><code>poiRow(int rowIndex, MissingRowPolicy missingPolicy)</code></td><td>POI <code>Row</code> qaytaradi. Row yo'q bo'lsa <code>ERROR</code> xato tashlaydi, <code>CREATE</code> default parametrlar bilan yaratadi.</td></tr>
+<tr><td><code>poiRow(int rowIndex, MissingRowPolicy missingPolicy, RowCreateOptions options)</code></td><td>POI <code>Row</code> qaytaradi yoki berilgan parametrlar bilan yaratadi.</td></tr>
+<tr><td><code>withRow(int rowIndex, MissingRowPolicy missingPolicy, Consumer&lt;? super Row&gt; consumer)</code></td><td>Row ustida lambda bajaradi va <code>XssfSheet</code>ni qaytaradi.</td></tr>
+<tr><td><code>withRow(int rowIndex, MissingRowPolicy missingPolicy, RowCreateOptions options, Consumer&lt;? super Row&gt; consumer)</code></td><td>Row'ni options bilan olib yoki yaratib, lambda bajaradi.</td></tr>
+<tr><td><code>poiCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy)</code></td><td>POI <code>Cell</code> qaytaradi. Missing row/cell uchun alohida policy ishlatadi.</td></tr>
+<tr><td><code>poiCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, RowCreateOptions rowOptions, CellCreateOptions cellOptions)</code></td><td>POI <code>Cell</code> qaytaradi yoki row/cell'ni berilgan create options bilan yaratadi.</td></tr>
+<tr><td><code>withCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, Consumer&lt;? super Cell&gt; consumer)</code></td><td>Cell ustida lambda bajaradi va <code>XssfSheet</code>ni qaytaradi.</td></tr>
+<tr><td><code>withCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, RowCreateOptions rowOptions, CellCreateOptions cellOptions, Consumer&lt;? super Cell&gt; consumer)</code></td><td>Cell'ni options bilan olib yoki yaratib, lambda bajaradi.</td></tr>
+<tr><td><code>includeEmptyRows(boolean value)</code></td><td>O'qishda bo'sh row'larni qo'shish yoki tashlab ketishni boshqaradi.</td></tr>
+<tr><td><code>row(int rowIndex, Object... values)</code></td><td>Berilgan row'ga qiymatlarni 0-column'dan boshlab yozadi.</td></tr>
+<tr><td><code>append(Object... values)</code></td><td>Oxirgi physical row'dan keyin yangi row qo'shadi.</td></tr>
+<tr><td><code>cell(int rowIndex, int columnIndex, Object value)</code></td><td>Bitta cell'ga qiymat yozadi.</td></tr>
+<tr><td><code>style(int rowIndex, int columnIndex, ExcelStyle styleDefinition)</code></td><td>Bitta cell'ga uslub qo'llaydi.</td></tr>
+<tr><td><code>autoSizeColumns(int firstColumn, int lastColumn)</code></td><td>Column kengligini avtomatik moslaydi.</td></tr>
+<tr><td><code>widths(int... widths)</code></td><td>Column kengliklarini o'rnatadi; manfiy qiymat o'tkazib yuboriladi.</td></tr>
+<tr><td><code>forEach(RowConsumer consumer)</code></td><td>Sheet row'larini <code>TextRow</code> sifatida aylanib chiqadi.</td></tr>
+<tr><td><code>values(int rowIndex)</code></td><td>Row qiymatlarini <code>List&lt;String&gt;</code> sifatida qaytaradi.</td></tr>
+<tr><td><code>rowsAsMaps(int headerRowIndex)</code></td><td>Jadvalni header row asosida <code>List&lt;Map&lt;String, String&gt;&gt;</code> qilib o'qiydi.</td></tr>
+</tbody></table></div>
+<h2 id="poi-row-va-cell-bilan-missing-policy-orqali-ishlash">POI <code>Row</code> va <code>Cell</code> bilan missing policy orqali ishlash</h2>
+<p>XSSF rejimida, va imkon qadar SXSSF rejimida ham, row/cell olishda missing holatni aniq boshqarish mumkin.</p>
+<p>Policy turlari:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Tur</th><th>Qiymat</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>MissingRowPolicy</code></td><td><code>ERROR</code></td><td>Row mavjud bo'lmasa <code>ExcelException</code> tashlaydi.</td></tr>
+<tr><td><code>MissingRowPolicy</code></td><td><code>CREATE</code></td><td>Row mavjud bo'lmasa yaratadi.</td></tr>
+<tr><td><code>MissingCellPolicy</code></td><td><code>ERROR</code></td><td>Cell mavjud bo'lmasa <code>ExcelException</code> tashlaydi.</td></tr>
+<tr><td><code>MissingCellPolicy</code></td><td><code>CREATE</code></td><td>Cell mavjud bo'lmasa yaratadi.</td></tr>
+<tr><td><code>MissingCellPolicy</code></td><td><code>CREATE_BLANK</code></td><td>Cell mavjud bo'lmasa aniq <code>CellType.BLANK</code> cell yaratadi. <code>CellCreateOptions</code> qo'llanmaydi.</td></tr>
+</tbody></table></div>
+<h3 id="row-mavjud-bo-lmasa-xato-tashlash">Row mavjud bo'lmasa xato tashlash</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().open(Path.of(&quot;input.xlsx&quot;))) {
+    Row row = book.sheet(&quot;Data&quot;)
+            .poiRow(10, MissingRowPolicy.ERROR);
+}</code></pre>
+<h3 id="row-mavjud-bo-lmasa-default-parametrlar-bilan-yaratish">Row mavjud bo'lmasa default parametrlar bilan yaratish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    Row row = book.sheet(&quot;Data&quot;)
+            .poiRow(10, MissingRowPolicy.CREATE);
+}</code></pre>
+<h3 id="row-mavjud-bo-lmasa-parametrlar-bilan-yaratish">Row mavjud bo'lmasa parametrlar bilan yaratish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    Row row = book.sheet(&quot;Data&quot;)
+            .poiRow(10, MissingRowPolicy.CREATE,
+                    RowCreateOptions.heightInPoints(24F).withZeroHeight(false));
+}</code></pre>
+<p><code>RowCreateOptions</code>:</p>
+<pre><code class="language-java">public record RowCreateOptions(Short height, Float heightInPoints, Boolean zeroHeight)</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>height()</code></td><td>Row height qiymatini qaytaradi.</td></tr>
+<tr><td><code>heightInPoints()</code></td><td>Row height in points qiymatini qaytaradi.</td></tr>
+<tr><td><code>zeroHeight()</code></td><td>Zero-height flag qiymatini qaytaradi.</td></tr>
+<tr><td><code>defaults()</code></td><td>Default row yaratish parametrlarini qaytaradi.</td></tr>
+<tr><td><code>height(short height)</code></td><td>Row height qiymati bilan options yaratadi.</td></tr>
+<tr><td><code>heightInPoints(float heightInPoints)</code></td><td>Row height in points bilan options yaratadi.</td></tr>
+<tr><td><code>zeroHeight(boolean zeroHeight)</code></td><td>Row zero-height flag bilan options yaratadi.</td></tr>
+<tr><td><code>withHeight(short height)</code></td><td>Mavjud options ustiga height qo'shadi.</td></tr>
+<tr><td><code>withHeightInPoints(float heightInPoints)</code></td><td>Mavjud options ustiga height-in-points qo'shadi.</td></tr>
+<tr><td><code>withZeroHeight(boolean zeroHeight)</code></td><td>Mavjud options ustiga zero-height flag qo'shadi.</td></tr>
+</tbody></table></div>
+<h3 id="cell-mavjud-bo-lmasa-xato-tashlash">Cell mavjud bo'lmasa xato tashlash</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().open(Path.of(&quot;input.xlsx&quot;))) {
+    Cell cell = book.sheet(&quot;Data&quot;)
+            .poiCell(10, 2, MissingRowPolicy.ERROR, MissingCellPolicy.ERROR);
+}</code></pre>
+<h3 id="row-va-cell-mavjud-bo-lmasa-default-parametrlar-bilan-yaratish">Row va cell mavjud bo'lmasa default parametrlar bilan yaratish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    Cell cell = book.sheet(&quot;Data&quot;)
+            .poiCell(10, 2, MissingRowPolicy.CREATE, MissingCellPolicy.CREATE);
+
+    cell.setCellValue(&quot;created&quot;);
+}</code></pre>
+<h3 id="cell-mavjud-bo-lmasa-blank-cell-yaratish">Cell mavjud bo'lmasa blank cell yaratish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    Cell cell = book.sheet(&quot;Data&quot;)
+            .poiCell(10, 2, MissingRowPolicy.CREATE, MissingCellPolicy.CREATE_BLANK);
+
+    // cell.getCellType() == CellType.BLANK
+}</code></pre>
+<h3 id="row-va-cell-mavjud-bo-lmasa-parametrlar-bilan-yaratish">Row va cell mavjud bo'lmasa parametrlar bilan yaratish</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    Cell cell = book.sheet(&quot;Data&quot;)
+            .poiCell(
+                    10,
+                    2,
+                    MissingRowPolicy.CREATE,
+                    MissingCellPolicy.CREATE,
+                    RowCreateOptions.heightInPoints(22F),
+                    CellCreateOptions.type(CellType.NUMERIC).withStyle(ExcelStyles.decimal())
+            );
+
+    cell.setCellValue(BigDecimal.TEN.doubleValue());
+}</code></pre>
+<p><code>CellCreateOptions</code>:</p>
+<pre><code class="language-java">public record CellCreateOptions(CellType type, ExcelStyle styleDefinition, CellStyle poiStyle)</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>type()</code></td><td>Yaratiladigan cell type qiymatini qaytaradi.</td></tr>
+<tr><td><code>styleDefinition()</code></td><td><code>ExcelStyle</code> qiymatini qaytaradi.</td></tr>
+<tr><td><code>poiStyle()</code></td><td>Tayyor POI <code>CellStyle</code> qiymatini qaytaradi.</td></tr>
+<tr><td><code>defaults()</code></td><td>Blank cell yaratish parametrlarini qaytaradi.</td></tr>
+<tr><td><code>type(CellType type)</code></td><td>POI <code>CellType</code> bilan options yaratadi.</td></tr>
+<tr><td><code>style(ExcelStyle styleDefinition)</code></td><td><code>ExcelStyle</code> bilan options yaratadi.</td></tr>
+<tr><td><code>poiStyle(CellStyle style)</code></td><td>Tayyor POI <code>CellStyle</code> bilan options yaratadi.</td></tr>
+<tr><td><code>withType(CellType type)</code></td><td>Mavjud options ustiga cell type qo'shadi.</td></tr>
+<tr><td><code>withStyle(ExcelStyle styleDefinition)</code></td><td>Mavjud options ustiga <code>ExcelStyle</code> qo'shadi.</td></tr>
+<tr><td><code>withPoiStyle(CellStyle style)</code></td><td>Mavjud options ustiga POI style qo'shadi.</td></tr>
+</tbody></table></div>
+<p>SXSSF bo'yicha muhim cheklov: SXSSF eski row'larni diskka flush qilishi mumkin. Flush qilingan row <code>poiRow(..., ERROR)</code> uchun mavjud emas deb hisoblanadi; <code>CREATE</code> esa POI/SXSSF cheklovlariga bog'liq holda faqat ruxsat etilgan row indekslarida ishlaydi.</p>
+<p>SXSSF <code>poiRow(... CREATE)</code> yoki <code>poiCell(... CREATE)</code> orqali row yaratilsa, keyingi fluent <code>row(...)</code> o'sha row ustiga yozib yubormasligi uchun ichki <code>nextRowIndex</code> avtomatik oldinga suriladi.</p>
+<h2 id="with-lambda-metodlari"><code>with...</code> lambda metodlari</h2>
+<p>POI obyektlariga to'g'ridan-to'g'ri murojaat qilish kerak bo'lsa, <code>with...</code> metodlari chain'ni buzmasdan lambda bajaradi.</p>
+<h3 id="joriy-xssf-workbook-bilan-ishlash">Joriy XSSF workbook bilan ishlash</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    book.withWorkbook(wb -&gt; wb.setForceFormulaRecalculation(true))
+            .sheet(&quot;Data&quot;)
+            .row(0, &quot;ID&quot;, &quot;Name&quot;);
+}</code></pre>
+<h3 id="xssf-sheet-row-va-cell-bilan-ishlash">XSSF sheet, row va cell bilan ishlash</h3>
+<pre><code class="language-java">try (var book = Excel.xssf().create()) {
+    book.sheet(&quot;Data&quot;)
+            .withSheet(sheet -&gt; sheet.createFreezePane(0, 1))
+            .withRow(0, MissingRowPolicy.CREATE,
+                    RowCreateOptions.heightInPoints(24F),
+                    row -&gt; row.setZeroHeight(false))
+            .withCell(
+                    0,
+                    0,
+                    MissingRowPolicy.CREATE,
+                    MissingCellPolicy.CREATE,
+                    RowCreateOptions.defaults(),
+                    CellCreateOptions.style(ExcelStyles.header()),
+                    cell -&gt; cell.setCellValue(&quot;ID&quot;)
+            );
+}</code></pre>
+<h3 id="joriy-sxssf-workbook-va-sheet-bilan-ishlash">Joriy SXSSF workbook va sheet bilan ishlash</h3>
+<pre><code class="language-java">try (var out = Excel.sxssf().write().to(Path.of(&quot;out.xlsx&quot;))) {
+    out.withWorkbook(wb -&gt; wb.setCompressTempFiles(true))
+            .sheet(&quot;Data&quot;)
+            .withSheet(sheet -&gt; sheet.setColumnWidth(0, 20 * 256))
+            .withCell(
+                    0,
+                    0,
+                    MissingRowPolicy.CREATE,
+                    MissingCellPolicy.CREATE,
+                    cell -&gt; cell.setCellValue(&quot;created with lambda&quot;)
+            )
+            .save();
+}</code></pre>
+<h2 id="sxssfapi"><code>SxssfApi</code></h2>
+<p><code>Excel.sxssf()</code> orqali olinadi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>read(Path path)</code></td><td>Fayldan SAX reader yaratadi.</td></tr>
+<tr><td><code>read(InputStream input)</code></td><td><code>InputStream</code>dan single-use SAX reader yaratadi.</td></tr>
+<tr><td><code>write()</code></td><td><code>SxssfWriteBuilder</code> yaratadi.</td></tr>
+<tr><td><code>from(XSSFWorkbook template)</code></td><td><code>XSSFWorkbook</code> template asosida SXSSF workbook yaratadi.</td></tr>
+<tr><td><code>writeFromTemplate(Path templatePath)</code></td><td>Excel template to'ldirish uchun <code>TemplateWriteBuilder</code> yaratadi.</td></tr>
+</tbody></table></div>
+<h2 id="sxssfread"><code>SxssfRead</code></h2>
+<p><code>SxssfRead</code> <code>.xlsx</code> faylni SAX orqali o'qiydi va workbook'ni to'liq xotiraga yuklamaydi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>onlySheet(String sheetName)</code></td><td>Faqat bitta sheet'ni o'qiydi. Bir necha marta chaqirish mumkin.</td></tr>
+<tr><td><code>onlySheets(Collection&lt;String&gt; sheetNames)</code></td><td>Faqat berilgan sheet'larni o'qiydi.</td></tr>
+<tr><td><code>includeEmptyRows(boolean value)</code></td><td>Bo'sh row'larni callback'ga yuborish yoki yubormaslikni boshqaradi.</td></tr>
+<tr><td><code>trimValues(boolean value)</code></td><td>Qiymatlarning bosh-oxiridagi probellarni olib tashlaydi.</td></tr>
+<tr><td><code>expectedColumns(int count)</code></td><td>Har bir row'ni berilgan column sonigacha normallashtiradi.</td></tr>
+<tr><td><code>maxRows(int count)</code></td><td>O'qiladigan row sonini cheklaydi.</td></tr>
+<tr><td><code>maxColumns(int count)</code></td><td>O'qiladigan column sonini cheklaydi.</td></tr>
+<tr><td><code>fromRow(int rowIndex)</code></td><td>O'qishni berilgan row indeksidan boshlaydi.</td></tr>
+<tr><td><code>formatter(DataFormatter formatter)</code></td><td>Text reading uchun POI <code>DataFormatter</code> beradi.</td></tr>
+<tr><td><code>forEach(RowConsumer consumer)</code></td><td>Row'larni <code>TextRow</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>forEachCells(CellRowConsumer consumer)</code></td><td>Row'larni <code>CellRow</code> va <code>ExcelCell</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>close()</code></td><td>Reader'ni yopiq holatga o'tkazadi.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">Excel.sxssf()
+        .read(Path.of(&quot;input.xlsx&quot;))
+        .fromRow(1)
+        .forEach(row -&gt; {
+            String name = row.value(0);
+            String amount = row.value(2);
+        });</code></pre>
+<pre><code class="language-java">Excel.sxssf()
+        .read(Path.of(&quot;input.xlsx&quot;))
+        .forEachCells(row -&gt; {
+            ExcelCell cell = row.cell(0);
+            Long id = cell.asLong();
+        });</code></pre>
+<h2 id="sxssfwritebuilder"><code>SxssfWriteBuilder</code></h2>
+<p><code>Excel.sxssf().write()</code> orqali yaratiladi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>windowSize(int windowSize)</code></td><td>SXSSF row access window size; qiymat <code>&gt; 0</code> bo'lishi kerak.</td></tr>
+<tr><td><code>compressTempFiles(boolean compressTempFiles)</code></td><td>SXSSF vaqtinchalik fayllarini siqishni boshqaradi.</td></tr>
+<tr><td><code>fromTemplate(Path templatePath)</code></td><td><code>.xlsx</code> template'dan SXSSF workbook yaratadi.</td></tr>
+<tr><td><code>fromTemplate(XSSFWorkbook template)</code></td><td><code>XSSFWorkbook</code> template'dan SXSSF workbook yaratadi.</td></tr>
+<tr><td><code>to(Path outputPath)</code></td><td>Output path bilan <code>SxssfWorkbook</code> yaratadi.</td></tr>
+<tr><td><code>to(OutputStream output)</code></td><td>Output stream bilan <code>SxssfWorkbook</code> yaratadi.</td></tr>
+</tbody></table></div>
+<h2 id="sxssfworkbook"><code>SxssfWorkbook</code></h2>
+<p><code>SxssfWorkbook</code> <code>AutoCloseable</code>. <code>close()</code> chaqirilganda <code>workbook.close()</code> va <code>workbook.dispose()</code> bajariladi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>workbook()</code></td><td>Ichki <code>SXSSFWorkbook</code> obyektini qaytaradi.</td></tr>
+<tr><td><code>withWorkbook(Consumer&lt;? super SXSSFWorkbook&gt; consumer)</code></td><td>Joriy <code>SXSSFWorkbook</code> ustida lambda bajaradi va <code>SxssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>to(Path outputPath)</code></td><td>Saqlash path'ini o'rnatadi.</td></tr>
+<tr><td><code>to(OutputStream output)</code></td><td>Saqlash output stream'ini o'rnatadi.</td></tr>
+<tr><td><code>sheet(String baseName)</code></td><td>Sheet tanlaydi yoki yaratadi. Nom Excel uchun safe ko'rinishga keltiriladi.</td></tr>
+<tr><td><code>onAutoCreateNewSheet(Consumer&lt;? super Sheet&gt; handler)</code></td><td>SXSSF row limit sabab avtomatik yangi sheet ochilganda callback bajaradi. Callback parametriga yangi sheet beriladi.</td></tr>
+<tr><td><code>poiSheet()</code></td><td>Joriy SXSSF sheet'ni POI <code>Sheet</code> sifatida qaytaradi. Sheet tanlanmagan bo'lsa <code>Sheet</code> yaratadi.</td></tr>
+<tr><td><code>withSheet(Consumer&lt;? super Sheet&gt; consumer)</code></td><td>Joriy SXSSF sheet ustida lambda bajaradi va <code>SxssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>poiRow(int rowIndex, MissingRowPolicy missingPolicy)</code></td><td>Joriy sheet'dan POI <code>Row</code> qaytaradi. Row yo'q bo'lsa <code>ERROR</code> xato tashlaydi, <code>CREATE</code> default parametrlar bilan yaratadi.</td></tr>
+<tr><td><code>poiRow(int rowIndex, MissingRowPolicy missingPolicy, RowCreateOptions options)</code></td><td>Joriy sheet'dan POI <code>Row</code> qaytaradi yoki parametrlar bilan yaratadi.</td></tr>
+<tr><td><code>withRow(int rowIndex, MissingRowPolicy missingPolicy, Consumer&lt;? super Row&gt; consumer)</code></td><td>Joriy sheet'dagi row ustida lambda bajaradi va <code>SxssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>withRow(int rowIndex, MissingRowPolicy missingPolicy, RowCreateOptions options, Consumer&lt;? super Row&gt; consumer)</code></td><td>Row'ni options bilan olib yoki yaratib, lambda bajaradi.</td></tr>
+<tr><td><code>poiCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy)</code></td><td>Joriy sheet'dan POI <code>Cell</code> qaytaradi. Missing row/cell uchun alohida policy ishlatadi.</td></tr>
+<tr><td><code>poiCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, RowCreateOptions rowOptions, CellCreateOptions cellOptions)</code></td><td>Joriy sheet'dan POI <code>Cell</code> qaytaradi yoki row/cell'ni parametrlar bilan yaratadi.</td></tr>
+<tr><td><code>withCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, Consumer&lt;? super Cell&gt; consumer)</code></td><td>Joriy sheet'dagi cell ustida lambda bajaradi va <code>SxssfWorkbook</code>ni qaytaradi.</td></tr>
+<tr><td><code>withCell(int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, RowCreateOptions rowOptions, CellCreateOptions cellOptions, Consumer&lt;? super Cell&gt; consumer)</code></td><td>Cell'ni options bilan olib yoki yaratib, lambda bajaradi.</td></tr>
+<tr><td><code>style(String name, ExcelStyle styleDefinition)</code></td><td>Named style ro'yxatdan o'tkazadi.</td></tr>
+<tr><td><code>style(String name)</code></td><td>Named style bo'yicha POI <code>CellStyle</code> qaytaradi.</td></tr>
+<tr><td><code>header(Object... values)</code></td><td>Built-in header style bilan row yozadi.</td></tr>
+<tr><td><code>row(Object... values)</code></td><td>Row yozadi.</td></tr>
+<tr><td><code>row(List&lt;?&gt; values)</code></td><td>List'dan row yozadi.</td></tr>
+<tr><td><code>row(List&lt;?&gt; values, String styleName)</code></td><td>Row yozadi va barcha cell'larga named style qo'llaydi.</td></tr>
+<tr><td><code>row(List&lt;?&gt; values, CellCustomizer customizer)</code></td><td>Row yozadi va har bir cell uchun customizer chaqiradi.</td></tr>
+<tr><td><code>rowWithBorders(List&lt;?&gt; values)</code></td><td>Thin border bilan row yozadi.</td></tr>
+<tr><td><code>rowWithBorders(List&lt;?&gt; values, CellCustomizer customizer)</code></td><td>Thin border bilan row yozadi va qo'shimcha cell sozlash imkonini beradi.</td></tr>
+<tr><td><code>widths(int... widths)</code></td><td>Joriy sheet column kengliklarini o'rnatadi.</td></tr>
+<tr><td><code>save()</code></td><td>Oldindan berilgan path yoki stream'ga saqlaydi.</td></tr>
+<tr><td><code>save(OutputStream output)</code></td><td>Aniq output stream'ga saqlaydi.</td></tr>
+<tr><td><code>toXssf()</code></td><td>SXSSF workbook'ni <code>XssfWorkbook</code>ga aylantiradi.</td></tr>
+<tr><td><code>close()</code></td><td>Workbook'ni yopadi va SXSSF temp fayllarni tozalaydi.</td></tr>
+</tbody></table></div>
+<p>Built-in style nomlari:</p>
+<ul>
+<li><code>__header</code>: bold + thin borders.</li>
+<li><code>__integer</code>: <code>#,##0</code> format.</li>
+<li><code>__decimal</code>: <code>#,##0.00</code> format.</li>
+<li><code>__date</code>: <code>dd.mm.yyyy</code> format.</li>
+</ul>
+<p><code>row(...)</code> qiymat turiga qarab built-in style'ni avtomatik qo'llaydi:</p>
+<ul>
+<li><code>Integer</code>, <code>Long</code> -&gt; integer style</li>
+<li><code>BigDecimal</code>, <code>Float</code>, <code>Double</code> -&gt; decimal style</li>
+<li><code>LocalDate</code>, <code>LocalDateTime</code>, <code>Date</code>, <code>Calendar</code> -&gt; date style</li>
+</ul>
+<h3 id="sxssf-row-limit-va-avtomatik-yangi-sheet">SXSSF row limit va avtomatik yangi sheet</h3>
+<p><code>SxssfWorkbook.row(...)</code> yozish jarayonida joriy sheet <code>Excel.MAX_ROWS</code> limitiga yetsa, kutubxona avtomatik yangi sheet yaratadi va yozishni davom ettiradi. Yangi sheet nomi bazaviy nomdan olinadi:</p>
+<ul>
+<li><code>Data</code></li>
+<li><code>Data_2</code></li>
+<li><code>Data_3</code></li>
+</ul>
+<p>Yangi sheet avtomatik yaratilganda callback ishlatish uchun <code>onAutoCreateNewSheet(...)</code> metodidan foydalaning.</p>
+<pre><code class="language-java">try (var out = Excel.sxssf().write().to(Path.of(&quot;large.xlsx&quot;))) {
+    out.sheet(&quot;Data&quot;)
+            .onAutoCreateNewSheet(sheet -&gt; {
+                sheet.createFreezePane(0, 1);
+                sheet.setColumnWidth(0, 20 * 256);
+            });
+
+    for (long i = 0; i &lt; (long) Excel.MAX_ROWS + 10; i++) {
+        out.row(i, &quot;Name &quot; + i);
+    }
+
+    out.save();
+}</code></pre>
+<p><code>onAutoCreateNewSheet(Consumer&lt;? super Sheet&gt; handler)</code> faqat row limit sabab avtomatik ochilgan sheet uchun ishlaydi. Qo'lda <code>sheet(&quot;...&quot;)</code> chaqirilsa, bu callback ishlamaydi.</p>
+<h2 id="templatewritebuilder"><code>TemplateWriteBuilder</code></h2>
+<p><code>Excel.sxssf().writeFromTemplate(Path)</code> orqali yaratiladi. Excel shablonini katta hajmdagi ma'lumotlar bilan to'ldirish uchun ishlatiladi.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>sheet(int index)</code></td><td>Template sheet indeksi. Default: <code>0</code>.</td></tr>
+<tr><td><code>headerLastRow(int index)</code></td><td>Header blokining oxirgi row indeksi. Default: <code>0</code>.</td></tr>
+<tr><td><code>dataStartRow(int index)</code></td><td>Data yozish boshlanadigan row indeksi. Default: <code>1</code>.</td></tr>
+<tr><td><code>dataColumns(int first, int last)</code></td><td>Data column oralig'i, inclusive.</td></tr>
+<tr><td><code>summaryRow(Integer index)</code></td><td>Formula summary row indeksi. <code>null</code> bo'lishi mumkin.</td></tr>
+<tr><td><code>windowSize(int size)</code></td><td>SXSSF window size.</td></tr>
+<tr><td><code>rows(TemplateRowProvider provider)</code></td><td>Data row manbai. <code>null</code> qaytarsa yozish to'xtaydi.</td></tr>
+<tr><td><code>save(Path outputPath)</code></td><td>Template'ni to'ldirib faylga saqlaydi.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">Excel.sxssf()
+        .writeFromTemplate(Path.of(&quot;template.xlsx&quot;))
+        .sheet(0)
+        .headerLastRow(0)
+        .dataStartRow(1)
+        .dataColumns(0, 3)
+        .summaryRow(10)
+        .rows((globalRow, sheetIndex, rowIndex) -&gt; {
+            if (globalRow &gt; 1_000) {
+                return null;
+            }
+            return List.of(globalRow, &quot;Name &quot; + globalRow, BigDecimal.TEN, LocalDate.now());
+        })
+        .save(Path.of(&quot;filled.xlsx&quot;));</code></pre>
+<p>Ichki ishlash tartibi:</p>
+<ul>
+<li><code>dataStartRow</code>dan boshlangan mavjud row'lar tozalanadi.</li>
+<li>Style'lar template data row yoki column style'dan olinadi.</li>
+<li>Excel row limit to'lsa yangi sheet yaratiladi.</li>
+<li>Yangi sheet'larga header row'lar, column width va header merged region'lar ko'chiriladi.</li>
+<li><code>summaryRow</code> berilgan bo'lsa, <code>A2:A10</code> ko'rinishidagi formula range'lari haqiqiy data range'ga moslanadi.</li>
+</ul>
+<h2 id="excelstyle-va-excelstyles"><code>ExcelStyle</code> va <code>ExcelStyles</code></h2>
+<p><code>ExcelStyle</code> functional interface:</p>
+<pre><code class="language-java">void apply(CellStyle style, Workbook workbook);</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>apply(CellStyle style, Workbook workbook)</code></td><td>POI <code>CellStyle</code>ga sozlamalarni qo'llaydi.</td></tr>
+<tr><td><code>andThen(ExcelStyle next)</code></td><td>Ikki style definition'ni ketma-ket bajariladigan bitta <code>ExcelStyle</code>ga birlashtiradi.</td></tr>
+</tbody></table></div>
+<p>Style'larni kompozitsiya qilish mumkin:</p>
+<pre><code class="language-java">var importantMoney = ExcelStyles.decimal()
+        .andThen(ExcelStyles.thinBorders())
+        .andThen((style, workbook) -&gt; {
+            var font = workbook.createFont();
+            font.setBold(true);
+            style.setFont(font);
+        });</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod yoki konstanta</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>INTEGER_FORMAT</code></td><td><code>#,##0</code></td></tr>
+<tr><td><code>DECIMAL_FORMAT</code></td><td><code>#,##0.00</code></td></tr>
+<tr><td><code>DATE_FORMAT</code></td><td><code>dd.mm.yyyy</code></td></tr>
+<tr><td><code>bold()</code></td><td>Bold font style.</td></tr>
+<tr><td><code>thinBorders()</code></td><td>Har tomondan thin border.</td></tr>
+<tr><td><code>dataFormat(String format)</code></td><td>POI data format yaratadi.</td></tr>
+<tr><td><code>header()</code></td><td><code>bold()</code> + <code>thinBorders()</code>.</td></tr>
+<tr><td><code>integer()</code></td><td>Integer number format.</td></tr>
+<tr><td><code>decimal()</code></td><td>Decimal number format.</td></tr>
+<tr><td><code>date()</code></td><td>Date format.</td></tr>
+</tbody></table></div>
+<h2 id="textrow-cellrow-excelcell"><code>TextRow</code>, <code>CellRow</code>, <code>ExcelCell</code></h2>
+<p><code>TextRow</code>:</p>
+<pre><code class="language-java">public record TextRow(int sheetIndex, String sheetName, int rowIndex, List&lt;String&gt; values)</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>sheetIndex()</code></td><td>Sheet indeksini qaytaradi.</td></tr>
+<tr><td><code>sheetName()</code></td><td>Sheet nomini qaytaradi.</td></tr>
+<tr><td><code>rowIndex()</code></td><td>Row indeksini qaytaradi.</td></tr>
+<tr><td><code>values()</code></td><td>Row qiymatlarini qaytaradi.</td></tr>
+<tr><td><code>value(int columnIndex)</code></td><td>Column qiymatini xavfsiz qaytaradi. Index yo'q bo'lsa <code>&quot;&quot;</code> qaytaradi.</td></tr>
+</tbody></table></div>
+<p><code>CellRow</code>:</p>
+<pre><code class="language-java">public record CellRow(int sheetIndex, String sheetName, int rowIndex, List&lt;ExcelCell&gt; cells)</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>sheetIndex()</code></td><td>Sheet indeksini qaytaradi.</td></tr>
+<tr><td><code>sheetName()</code></td><td>Sheet nomini qaytaradi.</td></tr>
+<tr><td><code>rowIndex()</code></td><td>Row indeksini qaytaradi.</td></tr>
+<tr><td><code>cells()</code></td><td>Row cell'larini qaytaradi.</td></tr>
+<tr><td><code>cell(int columnIndex)</code></td><td><code>ExcelCell</code>ni xavfsiz qaytaradi. Index yo'q bo'lsa empty cell qaytaradi.</td></tr>
+</tbody></table></div>
+<p><code>ExcelCell</code>:</p>
+<pre><code class="language-java">public record ExcelCell(int columnIndex, String reference, String value, boolean dateStyle)</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>columnIndex()</code></td><td>Column indeksini qaytaradi.</td></tr>
+<tr><td><code>reference()</code></td><td>Excel cell reference qiymatini qaytaradi, masalan <code>A1</code>; bo'lmasa <code>null</code>.</td></tr>
+<tr><td><code>value()</code></td><td>Raw string qiymatni qaytaradi.</td></tr>
+<tr><td><code>dateStyle()</code></td><td>Cell date style bilan kelgan-kelmaganini qaytaradi.</td></tr>
+<tr><td><code>value(int columnIndex, String reference, String value, boolean dateStyle)</code></td><td>Value cell yaratish uchun static factory.</td></tr>
+<tr><td><code>empty(int columnIndex)</code></td><td>Empty cell yaratish uchun static factory.</td></tr>
+<tr><td><code>isEmpty()</code></td><td>Cell qiymati bo'shligini tekshiradi.</td></tr>
+<tr><td><code>asString()</code></td><td>Qiymatni string sifatida qaytaradi.</td></tr>
+<tr><td><code>asStringOrNull()</code></td><td>Bo'sh bo'lsa <code>null</code>, aks holda string qaytaradi.</td></tr>
+<tr><td><code>asBigDecimal()</code></td><td>Qiymatni <code>BigDecimal</code>ga parse qiladi. Probel, NBSP va decimal comma qo'llab-quvvatlanadi.</td></tr>
+<tr><td><code>asInteger()</code></td><td>Qiymatni <code>Integer</code>ga parse qiladi.</td></tr>
+<tr><td><code>asLong()</code></td><td>Qiymatni <code>Long</code>ga parse qiladi.</td></tr>
+<tr><td><code>asBoolean()</code></td><td>Boolean parse qiladi: <code>true/false</code>, <code>yes/no</code>, <code>y/n</code>, <code>1/0</code>, <code>da/yo'q/yoq</code>, <code>ha</code>.</td></tr>
+<tr><td><code>asLocalDate()</code></td><td>Date style bo'lsa Excel serial date'dan, aks holda string formatlardan <code>LocalDate</code> qaytaradi.</td></tr>
+<tr><td><code>asLocalDateTime()</code></td><td>Date style bo'lsa Excel serial date'dan, aks holda ISO local date-time'dan <code>LocalDateTime</code> qaytaradi.</td></tr>
+</tbody></table></div>
+<h2 id="callback-turlari">Callback turlari</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Tur</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>RowConsumer</code></td><td><code>void accept(TextRow row)</code></td></tr>
+<tr><td><code>CellRowConsumer</code></td><td><code>void accept(CellRow row)</code></td></tr>
+<tr><td><code>CellCustomizer</code></td><td><code>void customize(CellContext context)</code></td></tr>
+<tr><td><code>TemplateRowProvider</code></td><td><code>List&lt;?&gt; next(long globalRowNumber, int sheetIndex, int rowIndex)</code></td></tr>
+</tbody></table></div>
+<p><code>CellContext</code>:</p>
+<pre><code class="language-java">public record CellContext(
+        Workbook workbook,
+        Sheet sheet,
+        Row row,
+        Cell cell,
+        int rowIndex,
+        int columnIndex
+) {}</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>workbook()</code></td><td>Joriy POI workbook obyektini qaytaradi.</td></tr>
+<tr><td><code>sheet()</code></td><td>Joriy POI sheet obyektini qaytaradi.</td></tr>
+<tr><td><code>row()</code></td><td>Joriy POI row obyektini qaytaradi.</td></tr>
+<tr><td><code>cell()</code></td><td>Joriy POI cell obyektini qaytaradi.</td></tr>
+<tr><td><code>rowIndex()</code></td><td>Joriy row indeksini qaytaradi.</td></tr>
+<tr><td><code>columnIndex()</code></td><td>Joriy column indeksini qaytaradi.</td></tr>
+</tbody></table></div>
+<h2 id="formula"><code>Formula</code></h2>
+<p><code>Formula</code> oddiy <code>row(...)</code> va <code>cell(...)</code> metodlari orqali Excel formulasini yozish imkonini beradi.</p>
+<pre><code class="language-java">book.sheet(&quot;Report&quot;)
+        .cell(0, 0, &quot;Amount&quot;)
+        .cell(1, 0, BigDecimal.TEN)
+        .cell(2, 0, Excel.formula(&quot;SUM(A2:A2)&quot;));</code></pre>
+<p>To'g'ridan-to'g'ri yaratish:</p>
+<pre><code class="language-java">Formula formula = Formula.of(&quot;A1+B1&quot;);</code></pre>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>Formula.of(String expression)</code></td><td>Formula record yaratadi.</td></tr>
+<tr><td><code>expression()</code></td><td>Formula expression matnini qaytaradi.</td></tr>
+</tbody></table></div>
+<h2 id="excelutils"><code>ExcelUtils</code></h2>
+<p>POI <code>Row</code> va <code>Cell</code> bilan past darajada ishlash uchun helper metodlar.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Metod</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>setValue(Cell cell, Object value)</code></td><td>Java qiymatini POI cell'ga yozadi. <code>Formula</code>, <code>String</code>, <code>BigDecimal</code>, <code>Number</code>, <code>Boolean</code>, <code>LocalDate</code>, <code>LocalDateTime</code>, <code>Date</code>, <code>Calendar</code> va boshqa obyektlarni qo'llaydi.</td></tr>
+<tr><td><code>decimalOrString(String value)</code></td><td>String son bo'lsa <code>BigDecimal</code>, aks holda string qaytaradi.</td></tr>
+<tr><td><code>setDecimalOrString(SXSSFRow row, int columnIndex, String value, CellStyle numericStyle)</code></td><td>SXSSF row'da cell yaratadi va son yoki string yozadi.</td></tr>
+<tr><td><code>text(Row row, int columnIndex)</code></td><td>Cell'ni formatted text sifatida o'qiydi. Bo'sh bo'lsa <code>null</code>.</td></tr>
+<tr><td><code>localDate(Row row, int columnIndex)</code></td><td>Cell'ni <code>LocalDate</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>bigDecimal(Row row, int columnIndex)</code></td><td>Cell'ni <code>BigDecimal</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>integer(Row row, int columnIndex)</code></td><td>Cell'ni <code>Integer</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>longValue(Row row, int columnIndex)</code></td><td>Cell'ni <code>Long</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>bool(Row row, int columnIndex)</code></td><td>Cell'ni <code>Boolean</code> sifatida o'qiydi.</td></tr>
+<tr><td><code>getOrCreateRow(Sheet sheet, int rowIndex)</code></td><td>Row mavjud bo'lsa qaytaradi, bo'lmasa yaratadi.</td></tr>
+<tr><td><code>getOrCreateCell(Row row, int columnIndex)</code></td><td>Cell mavjud bo'lsa qaytaradi, bo'lmasa yaratadi.</td></tr>
+<tr><td><code>getOrCreateCell(Sheet sheet, int rowIndex, int columnIndex)</code></td><td>Sheet/row/column bo'yicha cell qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>row(Sheet sheet, int rowIndex, MissingRowPolicy missingPolicy)</code></td><td>Policy bo'yicha row qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>row(Sheet sheet, int rowIndex, MissingRowPolicy missingPolicy, RowCreateOptions options)</code></td><td>Policy va create options bo'yicha row qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>cell(Sheet sheet, int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy)</code></td><td>Sheet/row/column bo'yicha policy bilan cell qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>cell(Sheet sheet, int rowIndex, int columnIndex, MissingRowPolicy rowPolicy, MissingCellPolicy cellPolicy, RowCreateOptions rowOptions, CellCreateOptions cellOptions)</code></td><td>Row va cell create options bilan cell qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>cell(Row row, int columnIndex, MissingCellPolicy missingPolicy)</code></td><td>Mavjud row ichidan policy bilan cell qaytaradi yoki yaratadi.</td></tr>
+<tr><td><code>cell(Row row, int columnIndex, MissingCellPolicy missingPolicy, CellCreateOptions options)</code></td><td>Mavjud row ichidan policy va create options bilan cell qaytaradi yoki yaratadi.</td></tr>
+</tbody></table></div>
+<h2 id="xatolar">Xatolar</h2>
+<p>Kutubxona o'qish, yozish, konvertatsiya, custom property va typed parsing xatolarida <code>ExcelException</code> tashlaydi.</p>
+<p><code>ExcelException</code>:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Konstruktor</th><th>Vazifasi</th></tr></thead>
+<tbody>
+<tr><td><code>ExcelException(String message)</code></td><td>Xabar bilan exception yaratadi.</td></tr>
+<tr><td><code>ExcelException(String message, Throwable cause)</code></td><td>Xabar va sabab exception bilan exception yaratadi.</td></tr>
+</tbody></table></div>
+<pre><code class="language-java">try {
+    Excel.sxssf().read(Path.of(&quot;broken.xlsx&quot;)).forEach(row -&gt; {});
+} catch (ExcelException ex) {
+    // xatoni qayta ishlash
+}</code></pre>
+<h2 id="amaliy-tavsiyalar">Amaliy tavsiyalar</h2>
+<ul>
+<li>Kichik va o'rtacha fayllarni tahrirlash uchun <code>Excel.xssf()</code> ishlating.</li>
+<li>Katta fayllarni o'qish uchun <code>Excel.sxssf().read(...)</code> ishlating.</li>
+<li>Katta fayllarni yozish uchun <code>Excel.sxssf().write()</code> ishlating.</li>
+<li>Tayyor Excel shablonini style va layout bilan saqlab to'ldirish kerak bo'lsa <code>writeFromTemplate(...)</code> ishlating.</li>
+<li><code>toXssf()</code> SXSSF workbook'ni XSSF workbook'ga aylantiradi, shuning uchun juda katta fayllarda ehtiyotkorlik bilan ishlating.</li>
+</ul>
+    </main>
+  </div>
+</body>
+</html>

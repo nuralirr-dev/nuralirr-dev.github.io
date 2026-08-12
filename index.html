@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Java Kutubxonalar</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --line: #d7dee8;
+      --accent: #14775a;
+      --accent-dark: #0f5f49;
+      --tag-bg: #eaf6f1;
+      --tag-text: #0f5f49;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, #ffffff 0, var(--bg) 290px),
+        var(--bg);
+    }
+
+    .page {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.12;
+      letter-spacing: 0;
+      color: #111827;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .library-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 210px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(31, 41, 55, 0.06);
+    }
+
+    .library-card h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+      color: #162033;
+    }
+
+    .library-card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.55;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--tag-bg);
+      color: var(--tag-text);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a.button.secondary {
+      background: #ffffff;
+      color: var(--accent-dark);
+    }
+
+    a.button:hover {
+      border-color: var(--accent-dark);
+      background: var(--accent-dark);
+      color: #ffffff;
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 24px, 1080px);
+        padding-top: 28px;
+      }
+
+      .library-card {
+        min-height: auto;
+        padding: 18px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Java Kutubxonalar</h1>
+      <p class="lead">Loyihalarda qayta ishlatish uchun tayyorlangan kutubxonalar ro'yxati. Har bir kartada qisqa izoh va hujjatlarga havola beriladi.</p>
+    </header>
+
+    <section class="library-grid" aria-label="Kutubxonalar ro'yxati">
+      <article class="library-card">
+        <div>
+          <h2>Universal Excel POI</h2>
+          <p>Apache POI ustida qurilgan fluent Java kutubxonasi. `.xlsx` fayllarni o'qish, yozish, uslublash, shablondan to'ldirish va katta fayllar bilan ishlashga yordam beradi.</p>
+        </div>
+        <div class="meta">
+          <span class="tag">Java 25</span>
+          <span class="tag">Maven</span>
+          <span class="tag">Apache POI</span>
+        </div>
+        <div class="actions">
+          <a class="button" href="excel-poi.html">Hujjatni ochish</a>
+          <a class="button secondary" href="README.md">README.md</a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
